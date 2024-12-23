@@ -4,12 +4,14 @@
 # include <unistd.h> 
 # include <stdlib.h> 
 
-# define BUFFER_SIZE 42 
+# define BUFFER_SIZE 1000000000
 
 char    *get_next_line(int fd);
 char	*ft_strcat(char *dest, char *src);
 char    *ft_strcpy(char *s1, char *s2);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif
