@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/23 16:53:44 by macbook           #+#    #+#             */
+/*   Updated: 2024/12/25 15:47:02 by macbook          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <unistd.h> 
-# include <stdlib.h> 
+# include <fcntl.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-# define BUFFER_SIZE 1000000000
-
-char    *get_next_line(int fd);
+char	*get_next_line(int fd);
 char	*ft_strcat(char *dest, char *src);
-char    *ft_strcpy(char *s1, char *s2);
+char	*ft_strcpy(char *s1, char *s2);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
+void	*ft_calloc(int nmemb, size_t size);
 
 #endif
