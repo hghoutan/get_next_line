@@ -6,12 +6,26 @@
 /*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:48:39 by macbook           #+#    #+#             */
-/*   Updated: 2024/12/25 17:31:51 by macbook          ###   ########.fr       */
+/*   Updated: 2024/12/27 22:49:27 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 18:48:39 by macbook           #+#    #+#             */
+/*   Updated: 2024/12/27 22:35:22 by macbook          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
 
 char	*handle_concat(char *buffer, char *str)
 {
@@ -27,98 +41,101 @@ char	*handle_concat(char *buffer, char *str)
 	return (temp);
 }
 
-char	*read_from_file(int fd, char *remainder)
+char	*read_file_part(int fd, char *remainder, char *buffer)
 {
-	int		byte_read;
-	char	*buffer;
+	int	byte_read;
 
-	if (!remainder)
-		remainder = ft_calloc(1, 1);
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
 	byte_read = 1;
 	while (byte_read > 0)
 	{
 		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1)
-		{
-			free(remainder);
-			free(buffer);
 			return (NULL);
-		}
+		if (byte_read == 0 && !*remainder)
+			return (NULL);
 		buffer[byte_read] = 0;
 		remainder = handle_concat(remainder, buffer);
+		if (!remainder || *remainder == '\0')
+			return (NULL);
 		if (ft_strchr(remainder, '\n'))
 			break ;
 	}
-	free(buffer);
 	return (remainder);
 }
 
-char	*extract_line(char *buffer)
+char	*read_from_file(int fd, char *remainder)
 {
-	int		i;
-	char	*line;
+	char	*buffer;
+	char	*temp;
 
-	i = 0;
-	while (buffer[i])
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
 	{
-		if (buffer[i] == '\n')
-		{
-			line = malloc(i + 2);
-			if (!line)
-			{
-				free(buffer);
-				return (NULL);
-			}
-			ft_strncpy(line, buffer, i + 1);
-			line[i + 1] = '\0';
-			return (line);
-		}
-		i++;
+		free(remainder);
+		return (NULL);
 	}
-	return (NULL);
+	temp = read_file_part(fd, remainder, buffer);
+	if (!temp)
+	{
+		free(remainder);
+		free(buffer);
+		return (NULL);
+	}
+	free(buffer);
+	return (temp);
 }
 
-char	*skip_line(char *buffer)
+char	*extract_line(char *buffer, char **line, char **new_buffer)
 {
-	int		i;
-	int		j;
-	char	*new_buffer;
+	int	i;
+	int	j;
 
 	i = 0;
-	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	new_buffer = malloc(ft_strlen(buffer) - i + 1);
-	if (!new_buffer)
+	if (!buffer[i])
 		return (NULL);
-	while (buffer[++i])
-		new_buffer[j++] = buffer[i];
-	new_buffer[j] = '\0';
-	free(buffer);
-	return (new_buffer);
+	*line = malloc(i + 2);
+	if (!*line)
+		return (NULL);
+	ft_strncpy(*line, buffer, i + 1);
+	(*line)[i + 1] = '\0';
+	*new_buffer = malloc(ft_strlen(buffer) - i);
+	if (!*new_buffer)
+		return (NULL);
+	j = 0;
+	i++;
+	while (buffer[i])
+		(*new_buffer)[j++] = buffer[i++];
+	(*new_buffer)[j] = '\0';
+	return (*new_buffer);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
+	char		*new_buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!buffer)
+	{
+		buffer = ft_calloc(1, 1);
+		if (!buffer)
+			return (NULL);
+	}
 	buffer = read_from_file(fd, buffer);
 	if (!buffer)
 		return (NULL);
-	line = extract_line(buffer);
-	if (!line && *buffer)
+	if (!extract_line(buffer, &line, &new_buffer))
 	{
 		line = buffer;
 		buffer = NULL;
+		return (line);
 	}
-	else
-		buffer = skip_line(buffer);
+	free(buffer);
+	buffer = new_buffer;
 	return (line);
 }
 
@@ -130,8 +147,11 @@ char	*get_next_line(int fd)
 // 		return (1);
 // 	while ((str = get_next_line(fd)) != NULL)
 // 	{
-// 		printf("-%s\n", str);
+// 		printf("-%s", str);
+// 		free(str);
 // 	}
+// 	// printf("-%s\n", get_next_line(fd));
+// 	// printf("-%s\n", get_next_line(fd));
 // 	// printf("-%s\n", get_next_line(fd));
 // 	// printf("-%s\n", get_next_line(fd));
 // 	// printf("-%s\n", get_next_line(fd));
@@ -146,7 +166,9 @@ char	*get_next_line(int fd)
 // 	// get_next_line(fd);
 // 	// get_next_line(fd);
 // 	// printf("%s\n", );
-
+// 	// str = get_next_line(fd);
+// 	// free(str);
+// 	// printf("Last :%s", str);
 // 	close(fd);
 // 	return (0);
 // }

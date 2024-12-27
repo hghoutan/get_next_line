@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 16:53:44 by macbook           #+#    #+#             */
-/*   Updated: 2024/12/25 15:47:02 by macbook          ###   ########.fr       */
+/*   Updated: 2024/12/26 11:54:15 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 char	*get_next_line(int fd);
 char	*ft_strcat(char *dest, char *src);
