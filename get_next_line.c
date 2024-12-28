@@ -6,7 +6,7 @@
 /*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:48:39 by macbook           #+#    #+#             */
-/*   Updated: 2024/12/27 22:49:27 by macbook          ###   ########.fr       */
+/*   Updated: 2024/12/28 17:28:36 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,36 +139,36 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	char *str;
-// 	int fd = open("file.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		return (1);
-// 	while ((str = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("-%s", str);
-// 		free(str);
-// 	}
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// printf("-%s\n", get_next_line(fd));
-// 	// get_next_line2(fd);
-// 	// get_next_line2(fd);
-// 	// get_next_line2(fd);
-// 	// get_next_line2(fd);
-// 	// printf("-%s\n", get_next_line2(fd));
-// 	// printf("-%s\n", get_next_line2(fd));
-// 	// get_next_line(fd);
-// 	// get_next_line(fd);
-// 	// printf("%s\n", );
-// 	// str = get_next_line(fd);
-// 	// free(str);
-// 	// printf("Last :%s", str);
-// 	close(fd);
-// 	return (0);
-// }
+int	main(void)
+{
+	// char *str;
+	int fd = open("file.txt", O_RDONLY);
+	if (fd == -1)
+		return (1);
+	// while ((str = get_next_line(fd)) != NULL)
+	// {
+	// 	printf("-%s", str);
+	// 	free(str);
+	// }
+	printf("Buffer is :-%s\n", get_next_line(fd));
+	// printf("-%s\n", get_next_line(fd));
+	// printf("-%s\n", get_next_line(fd));
+	// printf("-%s\n", get_next_line(fd));
+	// printf("-%s\n", get_next_line(fd));
+	// printf("-%s\n", get_next_line(fd));
+	// printf("-%s\n", get_next_line(fd));
+	// get_next_line2(fd);
+	// get_next_line2(fd);
+	// get_next_line2(fd);
+	// get_next_line2(fd);
+	// printf("-%s\n", get_next_line2(fd));
+	// printf("-%s\n", get_next_line2(fd));
+	// get_next_line(fd);
+	// get_next_line(fd);
+	// printf("%s\n", );
+	// str = get_next_line(fd);
+	// free(str);
+	// printf("Last :%s", str);
+	close(fd);
+	return (0);
+}
