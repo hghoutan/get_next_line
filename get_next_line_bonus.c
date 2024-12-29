@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 18:48:39 by macbook           #+#    #+#             */
-/*   Updated: 2024/12/29 22:40:47 by macbook          ###   ########.fr       */
+/*   Created: 2024/12/28 18:38:49 by hghoutan          #+#    #+#             */
+/*   Updated: 2024/12/29 22:40:21 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*handle_concat(char *buffer, char *str)
 {
@@ -98,28 +98,28 @@ char	*extract_line(char *buffer, char **line, char **new_buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*line;
 	char		*new_buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buffer)
+	if (!buffer[fd])
 	{
-		buffer = ft_calloc(1, 1);
-		if (!buffer)
+		buffer[fd] = ft_calloc(1, 1);
+		if (!buffer[fd])
 			return (NULL);
 	}
-	buffer = read_from_file(fd, buffer);
-	if (!buffer)
+	buffer[fd] = read_from_file(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	if (!extract_line(buffer, &line, &new_buffer))
+	if (!extract_line(buffer[fd], &line, &new_buffer))
 	{
-		line = buffer;
-		buffer = NULL;
+		line = buffer[fd];
+		buffer[fd] = NULL;
 		return (line);
 	}
-	free(buffer);
-	buffer = new_buffer;
+	free(buffer[fd]);
+	buffer[fd] = new_buffer;
 	return (line);
 }
